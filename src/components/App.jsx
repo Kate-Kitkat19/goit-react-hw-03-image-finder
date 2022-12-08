@@ -13,17 +13,17 @@ export class App extends Component {
     page: 1,
     isLoading: false,
   };
- 
 
   componentDidMount() {}
-  // componentDidUpdate(_, prevState) {
+  // componentDidUpdate(prevProps, prevState) {
   //   if (prevState.query !== this.state.query) {
   //     this.setState({ page: 1 });
   //   }
   // }
 
-  onSubmit = evt => {
-    console.log(evt);
+  onSubmit = query => {
+    console.log('App query', query);
+    this.setState({ query });
   };
 
   render() {
