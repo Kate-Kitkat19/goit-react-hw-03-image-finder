@@ -4,6 +4,7 @@ import { ImageGallery } from '../ImageGallery/ImageGallery';
 import { Searchbar } from '../Searchbar/Searchbar';
 import { Loader } from '../Loader/Loader';
 import { Button } from '../Button/Button';
+import { Layout } from 'components/Layout/Layout.styled';
 
 export class App extends Component {
   state = {
@@ -19,11 +20,10 @@ export class App extends Component {
       prevState.page !== this.state.page ||
       prevState.query !== this.state.query
     ) {
-      this.setState({ isLoading: true });
       this.fetchPics()
         .then(data =>
           this.setState(prevState => {
-            return { images: [...prevState.images, data] };
+            return { images: [...prevState.images, ...data] };
           })
         )
         .catch(error => this.setState({ error }))
@@ -41,9 +41,11 @@ export class App extends Component {
     this.setState({ query });
     this.setState({ page: 1 });
     this.setState({ images: [] });
+    this.setState({ isLoading: true });
   };
 
   onLoadMore = async () => {
+    this.setState({ isLoading: true });
     this.setState(prevState => {
       return {
         page: prevState.page + 1,
@@ -56,13 +58,15 @@ export class App extends Component {
     return (
       <>
         <Searchbar onSubmit={this.onSubmit}></Searchbar>
-        {isLoading && <Loader />}
-        {images.length > 0 && (
-          <>
-            <ImageGallery images={images}></ImageGallery>
-            <Button onClick={this.onLoadMore} />
-          </>
-        )}
+        <Layout>
+          {isLoading && <Loader />}
+          {images.length > 0 && (
+            <>
+              <ImageGallery images={images}></ImageGallery>
+              <Button onClick={this.onLoadMore} />
+            </>
+          )}
+        </Layout>
       </>
     );
   }
