@@ -4,7 +4,7 @@ import {
   SearchForm,
   SearchFormLabel,
   SearchFormInput,
-  SearchbarStyled
+  SearchbarStyled,
 } from './Searchbar.styled';
 
 export class Searchbar extends Component {
@@ -14,13 +14,11 @@ export class Searchbar extends Component {
 
   setQuery = evt => {
     const value = evt.target.value.toLowerCase().trim();
-    console.log('Searchbar  query', value);
     this.setState({ query: value });
   };
 
   onFormSubmit = evt => {
     evt.preventDefault();
-    console.dir(evt);
     this.props.onSubmit(this.state.query);
     this.setState({ query: '' });
   };

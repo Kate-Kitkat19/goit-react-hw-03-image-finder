@@ -58,8 +58,8 @@ export class App extends Component {
     return (
       <>
         <Searchbar onSubmit={this.onSubmit}></Searchbar>
+        {isLoading && <Loader />}
         <Layout>
-          {isLoading && <Loader />}
           {images.length > 0 && (
             <>
               <ImageGallery images={images}></ImageGallery>
