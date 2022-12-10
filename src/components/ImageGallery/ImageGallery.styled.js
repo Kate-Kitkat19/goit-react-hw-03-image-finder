@@ -12,3 +12,4 @@ export const GalleryStyled = styled.ul`
   margin-left: auto;
   margin-right: auto;
 `;
+

@@ -4,6 +4,7 @@ import {
   SearchForm,
   SearchFormLabel,
   SearchFormInput,
+  SearchbarStyled
 } from './Searchbar.styled';
 
 export class Searchbar extends Component {
@@ -26,7 +27,7 @@ export class Searchbar extends Component {
 
   render() {
     return (
-      <header>
+      <SearchbarStyled>
         <SearchForm onSubmit={this.onFormSubmit}>
           <SearchButton type="submit" disabled={this.state.query === ''}>
             <SearchFormLabel className="button-label">Search</SearchFormLabel>
@@ -42,7 +43,7 @@ export class Searchbar extends Component {
             onChange={this.setQuery}
           />
         </SearchForm>
-      </header>
+      </SearchbarStyled>
     );
   }
 }

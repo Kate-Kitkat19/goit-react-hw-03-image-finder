@@ -1,7 +1,6 @@
-import { Searchbar } from './Searchbar';
 import styled from 'styled-components';
 
-export const SearchbarStyled = styled(Searchbar)`
+export const SearchbarStyled = styled.header`
   top: 0;
   left: 0;
   position: sticky;

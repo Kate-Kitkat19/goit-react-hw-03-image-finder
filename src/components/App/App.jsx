@@ -1,13 +1,9 @@
 import { getPictures } from '../../helpers/Pixabay';
 import React, { Component } from 'react';
 import { ImageGallery } from '../ImageGallery/ImageGallery';
-import { SearchbarStyled } from '../Searchbar/Searchbar.styled';
-
-async function fetchPics(key) {
-  const images = await getPictures(key);
-  console.log(images);
-  return images;
-}
+import { Searchbar } from '../Searchbar/Searchbar';
+import { Loader } from '../Loader/Loader';
+import { Button } from '../Button/Button';
 
 export class App extends Component {
   state = {
@@ -15,28 +11,58 @@ export class App extends Component {
     page: 1,
     images: [],
     isLoading: false,
+    error: null,
   };
 
-  componentDidMount() {}
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevState.query !== this.state.query) {
-  //     this.setState({ page: 1 });
-  //   }
-  // }
+  componentDidUpdate(_, prevState) {
+    if (
+      prevState.page !== this.state.page ||
+      prevState.query !== this.state.query
+    ) {
+      this.setState({ isLoading: true });
+      this.fetchPics()
+        .then(data =>
+          this.setState(prevState => {
+            return { images: [...prevState.images, data] };
+          })
+        )
+        .catch(error => this.setState({ error }))
+        .finally(this.setState({ isLoading: false }));
+    }
+  }
 
-  onSubmit = async query => {
-    console.log('App query', query);
+  fetchPics = async () => {
+    const { query, page } = this.state;
+    const data = await getPictures(query, page);
+    return data;
+  };
+
+  onSubmit = query => {
     this.setState({ query });
-    const data = await fetchPics(query);
-    console.log('App   data', data);
-    this.setState({ images: data });
+    this.setState({ page: 1 });
+    this.setState({ images: [] });
+  };
+
+  onLoadMore = async () => {
+    this.setState(prevState => {
+      return {
+        page: prevState.page + 1,
+      };
+    });
   };
 
   render() {
+    const { isLoading, images } = this.state;
     return (
       <>
-        <SearchbarStyled onSubmit={this.onSubmit}></SearchbarStyled>
-        <ImageGallery images={this.state.images}></ImageGallery>
+        <Searchbar onSubmit={this.onSubmit}></Searchbar>
+        {isLoading && <Loader />}
+        {images.length > 0 && (
+          <>
+            <ImageGallery images={images}></ImageGallery>
+            <Button onClick={this.onLoadMore} />
+          </>
+        )}
       </>
     );
   }
