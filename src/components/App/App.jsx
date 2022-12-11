@@ -20,6 +20,7 @@ export class App extends Component {
       prevState.page !== this.state.page ||
       prevState.query !== this.state.query
     ) {
+      this.setState({ isLoading: true });
       this.fetchPics()
         .then(data =>
           this.setState(prevState => {
@@ -41,11 +42,9 @@ export class App extends Component {
     this.setState({ query });
     this.setState({ page: 1 });
     this.setState({ images: [] });
-    this.setState({ isLoading: true });
   };
 
   onLoadMore = async () => {
-    this.setState({ isLoading: true });
     this.setState(prevState => {
       return {
         page: prevState.page + 1,

@@ -7,20 +7,38 @@ export class ImageGalleryItem extends Component {
     isModalOpen: false,
   };
 
-  onClick = () => {
+  onImageClick = () => {
     this.setState({ isModalOpen: true });
+    window.addEventListener('keydown', this.onEscapeClick);
   };
-  
+
+  onEscapeClick = evt => {
+    if (evt.code === 'Escape') {
+      this.setState({ isModalOpen: false });
+      window.removeEventListener('keydown', this.onEscapeClick);
+    }
+  };
+
+  onBackdropClick = evt => {
+    if (evt.target === evt.currentTarget) {
+      this.setState({ isModalOpen: false });
+    }
+  };
+
   render() {
     const { webformatURL, tags, largeImageURL } = this.props.img;
 
     return (
       <>
         {this.state.isModalOpen && (
-          <ModalWindow url={largeImageURL} tags={tags}></ModalWindow>
+          <ModalWindow
+            url={largeImageURL}
+            tags={tags}
+            onClose={this.onBackdropClick}
+          ></ModalWindow>
         )}
-        <GalleryItem onClick={this.onClick}>
-          <Image src={webformatURL} alt={tags} />
+        <GalleryItem>
+          <Image src={webformatURL} alt={tags} onClick={this.onImageClick} />
         </GalleryItem>
       </>
     );

@@ -6,6 +6,7 @@ import {
   SearchFormInput,
   SearchbarStyled,
 } from './Searchbar.styled';
+import { TbSearch } from 'react-icons/tb';
 
 export class Searchbar extends Component {
   state = {
@@ -28,11 +29,12 @@ export class Searchbar extends Component {
       <SearchbarStyled>
         <SearchForm onSubmit={this.onFormSubmit}>
           <SearchButton type="submit" disabled={this.state.query === ''}>
-            <SearchFormLabel className="button-label">Search</SearchFormLabel>
+            <SearchFormLabel>
+              <TbSearch style={{fill: #000000}}></TbSearch>Search
+            </SearchFormLabel>
           </SearchButton>
 
           <SearchFormInput
-            className="input"
             type="text"
             autoComplete="off"
             autoFocus
