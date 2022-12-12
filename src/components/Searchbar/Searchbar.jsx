@@ -6,6 +6,8 @@ import {
   SearchFormInput,
   SearchbarStyled,
 } from './Searchbar.styled';
+import propTypes from 'prop-types';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 export class Searchbar extends Component {
   state = {
@@ -28,6 +30,7 @@ export class Searchbar extends Component {
       <SearchbarStyled>
         <SearchForm onSubmit={this.onFormSubmit}>
           <SearchButton type="submit" disabled={this.state.query === ''}>
+            <SearchOutlinedIcon></SearchOutlinedIcon>
             <SearchFormLabel>Search</SearchFormLabel>
           </SearchButton>
 
@@ -44,3 +47,7 @@ export class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSubmit: propTypes.func.isRequired,
+};

@@ -1,6 +1,7 @@
 import { Image, GalleryItem } from './ImageGalleryItem.styled';
 import React, { Component } from 'react';
 import { ModalWindow } from '../Modal/Modal';
+import propTypes from 'prop-types';
 
 export class ImageGalleryItem extends Component {
   state = {
@@ -44,3 +45,11 @@ export class ImageGalleryItem extends Component {
     );
   }
 }
+
+ImageGalleryItem.propTypes = {
+  img: propTypes.shape({
+    webformatURL: propTypes.string.isRequired,
+    tags: propTypes.string.isRequired,
+    largeImageURL: propTypes.string.isRequired,
+  }),
+};

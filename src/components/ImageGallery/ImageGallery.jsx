@@ -1,5 +1,6 @@
 import { GalleryStyled } from './ImageGallery.styled';
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
+import propTypes from 'prop-types';
 
 export const ImageGallery = ({ images }) => {
   return (
@@ -9,4 +10,8 @@ export const ImageGallery = ({ images }) => {
       })}
     </GalleryStyled>
   );
+};
+
+ImageGallery.propTypes = {
+  images: propTypes.array,
 };
