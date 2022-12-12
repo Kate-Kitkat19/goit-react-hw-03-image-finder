@@ -1,8 +1,9 @@
 import { RotatingLines } from 'react-loader-spinner';
 import { StyledLoaderWrap } from './Loader.styled';
+import { createPortal } from 'react-dom';
 
 export const Loader = () => {
-  return (
+  return createPortal(
     <StyledLoaderWrap>
       <RotatingLines
         strokeColor="blue"
@@ -11,6 +12,7 @@ export const Loader = () => {
         width="96"
         visible={true}
       />
-    </StyledLoaderWrap>
+    </StyledLoaderWrap>,
+    document.getElementById('loader')
   );
 };
