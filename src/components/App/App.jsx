@@ -11,6 +11,7 @@ export class App extends Component {
   state = {
     query: '',
     page: 1,
+    totalPages: 0,
     images: [],
     isLoading: false,
     error: null,
@@ -24,10 +25,11 @@ export class App extends Component {
       this.setState({ isLoading: true });
       this.fetchPics()
         .then(data => {
-          console.log(data);
-          this.setState(prevState => {
-            return { images: [...prevState.images, ...data] };
-          });
+          if (data) {
+            this.setState(prevState => {
+              return { images: [...prevState.images, ...data] };
+            });
+          }
         })
         .catch(error => this.setState({ error }))
         .finally(() => this.setState({ isLoading: false }));
@@ -37,10 +39,13 @@ export class App extends Component {
   fetchPics = async () => {
     const { query, page } = this.state;
     const data = await getPictures(query, page);
-    if (data.length === 0) {
+    if (data.total > 0) {
+      const totalPages = Math.ceil(data.total / 12);
+      this.setState({ totalPages });
+      return data.images;
+    } else {
       this.onZeroResult();
     }
-    return data;
   };
 
   onSubmit = query => {
@@ -62,19 +67,15 @@ export class App extends Component {
   };
 
   render() {
-    const { isLoading, images } = this.state;
+    const { isLoading, images, page, totalPages } = this.state;
     return (
       <>
         <Toaster></Toaster>
         <Searchbar onSubmit={this.onSubmit}></Searchbar>
         {isLoading && <Loader />}
         <Layout>
-          {images.length > 0 && (
-            <>
-              <ImageGallery images={images}></ImageGallery>
-              <Button onClick={this.onLoadMore} />
-            </>
-          )}
+          {images.length > 0 && <ImageGallery images={images}></ImageGallery>}
+          {page < totalPages && <Button onClick={this.onLoadMore} />}
         </Layout>
       </>
     );

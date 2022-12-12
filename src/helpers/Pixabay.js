@@ -9,5 +9,6 @@ export async function getPictures(query, page) {
   const response = await axios.get(
     `${BASE_URL}${params}&q=${query}&page=${page}`
   );
-  return response.data.hits;
+  const totalHits = response.data.totalHits;
+  return { total: totalHits, images: response.data.hits };
 }
