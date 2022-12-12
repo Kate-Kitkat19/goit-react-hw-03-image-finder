@@ -5,6 +5,7 @@ import { Searchbar } from '../Searchbar/Searchbar';
 import { Loader } from '../Loader/Loader';
 import { Button } from '../Button/Button';
 import { Layout } from 'components/Layout/Layout.styled';
+import toast, { Toaster } from 'react-hot-toast';
 
 export class App extends Component {
   state = {
@@ -22,11 +23,12 @@ export class App extends Component {
     ) {
       this.setState({ isLoading: true });
       this.fetchPics()
-        .then(data =>
+        .then(data => {
+          console.log(data);
           this.setState(prevState => {
             return { images: [...prevState.images, ...data] };
-          })
-        )
+          });
+        })
         .catch(error => this.setState({ error }))
         .finally(() => this.setState({ isLoading: false }));
     }
@@ -35,6 +37,9 @@ export class App extends Component {
   fetchPics = async () => {
     const { query, page } = this.state;
     const data = await getPictures(query, page);
+    if (data.length === 0) {
+      this.onZeroResult();
+    }
     return data;
   };
 
@@ -52,10 +57,15 @@ export class App extends Component {
     });
   };
 
+  onZeroResult = () => {
+    toast.error('Sorry, no images found.');
+  };
+
   render() {
     const { isLoading, images } = this.state;
     return (
       <>
+        <Toaster></Toaster>
         <Searchbar onSubmit={this.onSubmit}></Searchbar>
         {isLoading && <Loader />}
         <Layout>
